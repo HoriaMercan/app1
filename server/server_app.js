@@ -70,7 +70,7 @@ app.post('/books/', (req,res)=>{
     let body = req.body;
     console.log(body);
     books.push(body)
-    res.json({"message":'Carte++'});
+    res.json(`Added\n` + book)
 });
 app.put('/books/put/:id/' , async(req,res)=>{
     const _id = req.params.id;
