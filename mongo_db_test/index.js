@@ -35,10 +35,15 @@ async function main(){
         let collection = database.collection("customers");
         collection.find().toArray()
         .then(results =>{
-            let usersEmail = [];
-            results.forEach(user =>{ usersEmail.push(user.email) });
-            console.log(usersEmail);
-            res.send(usersEmail);
+            let users = [];
+            results.forEach(user =>{ users.push({
+              email : user.email,
+              nume : user.nume,
+              prenume : user.prenume,
+              dateOfBirth : user.dateOfBirth
+            }) });
+            console.log(users);
+            res.send(users);
         })
         .catch(error => console.log(error));
     })
@@ -77,7 +82,12 @@ async function main(){
             console.log("Error");
           }
           if(results.matchedCount){
-            res.send('User updated' + JSON.stringify(body));
+            res.send('User updated').json({
+              email : body.email,
+              nume : body.nume,
+              prenume : body.prenume,
+              dateOfBirth : body.dateOfBirth
+            });
           }
           else{
             res.send("User not found");
@@ -107,10 +117,18 @@ async function main(){
       let collection = database.collection("customers");
       let email = req.body.email;
       let parola = req.body.parola;
+      let body = req.body;
       collection.findOne({email : email , parola : md5(parola)} , (err , results)=>{
         if(err) res.status(400).json(err);
         if(results){
-          res.json({error:null , data : email});
+          res.json({succedded: true , user : {
+    
+              email : body.email,
+              nume : body.nume,
+              prenume : body.prenume,
+              dateOfBirth : body.dateOfBirth
+            
+          }});
         }
         else{
           res.status(404).json({error:"Not found" , data : null});
