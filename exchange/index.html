@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <h1>Exchange</h1>
+        <label>Currency 1
+        <input type = "text" id = "currency_1" name = "currency_1" /></label> </br>
+        
+        <label> Currency 2
+        <input type = "text" id = "currency_2" name = "currency_2" /></label></br>
+        
+        <label> Value
+        <input type = "text" id = "value" name = "value" /> </label></br>
+        
+        <button type = "submit" onclick="sendRequest()"> Submit</button></br>
+        <label for = "results">Results</label>
+        <input type = "text" id = "results" name = "results" /> </br>
+   
+        <script src="https://unpkg.com/axios/dist/axios.min.js">
+            const axios = require('axios');
+        </script>
+
+        <script>
+            function sendRequest(){
+                let cur1 = document.getElementById("currency_1").value;
+                let cur2 = document.getElementById("currency_2").value;
+                let value = document.getElementById("value").value;
+                axios.get("http://localhost:5000/" + cur1 + "/" + cur2 + "/" + value)
+                .then(results =>{
+                    let exchange_sum =  results.data.message;
+                    console.log(results);
+                    console.log(exchange_sum);
+                    document.getElementById("results").value = exchange_sum;
+
+                } )
+                .catch((err)=>{
+                    console.log(err);
+                })
+            }
+        </script>
+
+    </body>
+</html>
